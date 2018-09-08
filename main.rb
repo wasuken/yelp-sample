@@ -21,7 +21,10 @@ def search(term, location, limit=10)
     conn.headers['Authorization'] = "Bearer #{API_KEY}"
     conn.use Faraday::Adapter::NetHttp
   end
-  p JSON.parse con.get(url,params).body
+  JSON.parse con.get(url,params).body
 end
-
-p search("Ramen","Tokyo")
+food=ARGV[0]  || "Ramen"
+local=ARGV[1] || "Tokyo"
+search(food,local,30)["businesses"].each do |i|
+  p "#{i["alias"]} :: #{i["name"]} :: #{i["location"]["address1"]}"
+end
